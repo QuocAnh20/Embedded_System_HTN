@@ -1,0 +1,124 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+FLASH            0x0000000008000000 0x0000000000010000 xr
+RAM              0x0000000020000000 0x0000000000005000 xrw
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD Output/main.o
+LOAD Output/GPIO.o
+LOAD Output/RCC.o
+LOAD Output/startup_stm32f10x_md.o
+
+.text           0x0000000008000000      0x46c
+ *(.text.isr_vector)
+ .text.isr_vector
+                0x0000000008000000       0x40 Output/startup_stm32f10x_md.o
+                0x0000000008000000                g_pfnVectors
+ *(.text)
+ .text          0x0000000008000040       0xa8 Output/main.o
+                0x0000000008000040                mdelay
+                0x000000000800007e                main
+ .text          0x00000000080000e8      0x198 Output/GPIO.o
+                0x00000000080000e8                GPIO_Config
+                0x000000000800022a                GPIO_Write_Pin
+                0x0000000008000258                GPIO_Read_Pin
+ .text          0x0000000008000280      0x1cc Output/RCC.o
+                0x0000000008000280                RCC_Config_72Mhz
+                0x0000000008000334                RCC_Enable_PortA
+                0x0000000008000350                RCC_Enable_PortB
+                0x000000000800036c                RCC_Enable_PortC
+                0x0000000008000388                RCC_Enable_AFIO
+                0x00000000080003a4                RCC_Enable_TIM2
+                0x00000000080003c0                RCC_Enable_ADC01
+                0x00000000080003dc                RCC_Enable_UART1
+                0x00000000080003f8                RCC_Enable_SPI1
+                0x0000000008000414                RCC_Enable_I2C1
+                0x0000000008000430                RCC_Enable_USB
+ .text          0x000000000800044c        0x0 Output/startup_stm32f10x_md.o
+ *(.text*)
+ .text.Reset_Handler
+                0x000000000800044c       0x20 Output/startup_stm32f10x_md.o
+                0x000000000800044c                Reset_Handler
+                0x0000000008000456                NMI_Handler
+                0x0000000008000458                HardFault_Handler
+                0x000000000800045a                MemManage_Handler
+                0x000000000800045c                BusFault_Handler
+                0x000000000800045e                UsageFault_Handler
+                0x0000000008000460                SVC_Handler
+                0x0000000008000462                DebugMon_Handler
+                0x0000000008000464                PendSV_Handler
+                0x0000000008000466                SysTick_Handler
+ *(.rodata)
+ *(.rodata*)
+                0x000000000800046c                _sidata = .
+
+.glue_7         0x000000000800046c        0x0
+ .glue_7        0x000000000800046c        0x0 linker stubs
+
+.glue_7t        0x000000000800046c        0x0
+ .glue_7t       0x000000000800046c        0x0 linker stubs
+
+.vfp11_veneer   0x000000000800046c        0x0
+ .vfp11_veneer  0x000000000800046c        0x0 linker stubs
+
+.v4_bx          0x000000000800046c        0x0
+ .v4_bx         0x000000000800046c        0x0 linker stubs
+
+.iplt           0x000000000800046c        0x0
+ .iplt          0x000000000800046c        0x0 Output/main.o
+
+.rel.dyn        0x000000000800046c        0x0
+ .rel.iplt      0x000000000800046c        0x0 Output/main.o
+
+.data           0x0000000020000000        0x0 load address 0x000000000800046c
+                0x0000000020000000                _sdata = .
+ *(.data)
+ .data          0x0000000020000000        0x0 Output/main.o
+ .data          0x0000000020000000        0x0 Output/GPIO.o
+ .data          0x0000000020000000        0x0 Output/RCC.o
+ .data          0x0000000020000000        0x0 Output/startup_stm32f10x_md.o
+ *(.data*)
+                0x0000000020000000                _edata = .
+
+.igot.plt       0x0000000020000000        0x0 load address 0x000000000800046c
+ .igot.plt      0x0000000020000000        0x0 Output/main.o
+
+.stack          0x0000000020000000      0x400 load address 0x0000000008000470
+ .stack         0x0000000020000000      0x400 Output/startup_stm32f10x_md.o
+
+.heap           0x0000000020000400      0x200 load address 0x0000000008000870
+ .heap          0x0000000020000400      0x200 Output/startup_stm32f10x_md.o
+
+.bss            0x0000000020000600        0x0 load address 0x0000000008000a70
+                0x0000000020000600                _sbss = .
+ *(.bss)
+ .bss           0x0000000020000600        0x0 Output/main.o
+ .bss           0x0000000020000600        0x0 Output/GPIO.o
+ .bss           0x0000000020000600        0x0 Output/RCC.o
+ .bss           0x0000000020000600        0x0 Output/startup_stm32f10x_md.o
+ *(.bss*)
+ *(COMMON)
+                0x0000000020000600                _ebss = .
+OUTPUT(Output/main.elf elf32-littlearm)
+LOAD linker stubs
+
+.comment        0x0000000000000000       0x33
+ .comment       0x0000000000000000       0x33 Output/main.o
+                                         0x34 (size before relaxing)
+ .comment       0x0000000000000033       0x34 Output/GPIO.o
+ .comment       0x0000000000000033       0x34 Output/RCC.o
+
+.ARM.attributes
+                0x0000000000000000       0x2b
+ .ARM.attributes
+                0x0000000000000000       0x2d Output/main.o
+ .ARM.attributes
+                0x000000000000002d       0x2d Output/GPIO.o
+ .ARM.attributes
+                0x000000000000005a       0x2d Output/RCC.o
+ .ARM.attributes
+                0x0000000000000087       0x21 Output/startup_stm32f10x_md.o
